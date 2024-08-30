@@ -9,7 +9,6 @@ from datetime import date
 load_dotenv()
 FMARKET_AUTHORIZATION = os.environ.get("FMARKET_AUTHORIZATION")
 
-url = "https://api.fmarket.vn/res/products/filter"
 HEADERS = {
     "accept": "application/json, text/plain, */*",
     "accept-language": "vi",
@@ -29,6 +28,7 @@ HEADERS = {
 
 
 def get_all_funds() -> list:
+    url = "https://api.fmarket.vn/res/products/filter"
     payload = json.dumps(
         {
             "types": ["NEW_FUND", "TRADING_FUND"],
@@ -167,12 +167,8 @@ def get_nav_history(
 
     if response.status_code == 200:
         nav_history = response.json()["data"]
-        try:
-            for nav in nav_history:
-                nav["fund_id"] = fund_id
-            return nav_history
-        except:
-            return []
+        return nav_history
+
     else:
         raise requests.exceptions.HTTPError(
             "Error when request API: {} - {}".format(
