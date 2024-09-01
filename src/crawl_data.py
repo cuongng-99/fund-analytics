@@ -27,7 +27,7 @@ HEADERS = {
 }
 
 
-def get_all_funds() -> list:
+def get_all_funds() -> pd.DataFrame:
     url = "https://api.fmarket.vn/res/products/filter"
     payload = json.dumps(
         {
@@ -86,11 +86,17 @@ def get_top_holding(fund_id) -> list:
 
     if response.status_code == 200:
         data = response.json()["data"]
-        list_hoding = data["productTopHoldingList"] + data["productTopHoldingBondList"]
-        for product in list_hoding:
-            product["fund_id"] = fund_id
+        try:
+            list_hoding = (
+                data["productTopHoldingList"] + data["productTopHoldingBondList"]
+            )
+            for product in list_hoding:
+                product["fund_id"] = fund_id
+            return list_hoding
 
-        return list_hoding
+        except Exception as e:
+            print(e)
+            return []
 
     else:
         raise requests.exceptions.HTTPError(
@@ -106,9 +112,14 @@ def get_asset_hoding(fund_id) -> list:
 
     if response.status_code == 200:
         data = response.json()["data"]
-        list_asset = data["productAssetHoldingList"]
-        for product in list_asset:
-            product["fund_id"] = fund_id
+        try:
+            list_asset = data["productAssetHoldingList"]
+            for product in list_asset:
+                product["fund_id"] = fund_id
+
+        except Exception as e:
+            print(e)
+            list_asset = []
 
         return list_asset
 
