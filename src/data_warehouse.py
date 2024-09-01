@@ -129,6 +129,14 @@ def create_table():
                 asset_percent FLOAT
             );
 
+            CREATE TABLE net_asset_values (
+                id INT PRIMARY KEY,
+                product_id INT,
+                nav_date DATE,
+                nav FLOAT,
+                created_at DATETIME
+            );
+
         END
         """
         cursor.execute(check_table_query)
