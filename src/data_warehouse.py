@@ -84,7 +84,20 @@ def create_table():
                 status VARCHAR(50),
                 owner_id INT,
                 fund_type_name NVARCHAR(255),
-                fund_type_code VARCHAR(50)
+                fund_type_code VARCHAR(50),
+                nav_to_previous FLOAT,
+                nav_to_last_year float,
+                nav_to_establish float, 
+                nav_to1_months float, 
+                nav_to3_months float, 
+                nav_to6_months float, 
+                nav_to12_months float, 
+                nav_to24_months float, 
+                nav_to36_months float, 
+                nav_to60_months float,
+                annualized_return36_months float,
+                nav_to_beginning float
+                
             );
 
             CREATE TABLE owners (

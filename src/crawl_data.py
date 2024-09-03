@@ -68,6 +68,7 @@ def get_all_funds() -> pd.DataFrame:
             "owner",
             "status",
             "dataFundAssetType",
+            "productNavChange",
         ]
         data = [{k: v for k, v in fund.items() if k in columns} for fund in data]
         return pd.DataFrame(data)
