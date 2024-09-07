@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import pandas as pd
 import time
 from datetime import date
+from vnstock3 import Vnstock
 
 load_dotenv()
 FMARKET_AUTHORIZATION = os.environ.get("FMARKET_AUTHORIZATION")
@@ -155,11 +156,11 @@ def get_industry_holding(fund_id) -> list:
         )
 
 
-today = date.today().strftime("%Y%m%d")
+today = date.today()
 
 
 def get_nav_history(
-    fund_id: int, start_date: str = None, end_date: str = today
+    fund_id: int, start_date: str = None, end_date: str = today.strftime("%Y%m%d")
 ) -> list:
     url = "https://api.fmarket.vn/res/product/get-nav-history"
     if not start_date:
@@ -187,6 +188,15 @@ def get_nav_history(
                 response.status_code, {response.text}
             )
         )
+
+
+def get_vn_stock_price(code):
+    stock = Vnstock().stock(symbol=code, source="VCI")
+    df_stock = stock.quote.history(
+        start="2015-01-01", end=today.strftime("%Y-%m-%d"), interval="1D"
+    )
+    df_stock["id"] = code
+    return df_stock
 
 
 if __name__ == "__main__":
